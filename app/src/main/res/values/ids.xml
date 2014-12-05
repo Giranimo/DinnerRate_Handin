@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="menubar" type="id" />
+    <item name="tab1" type="id" />
+    <item name="tab2" type="id" />
+    <item name="tab3" type="id" />
+    <item name="tab4" type="id" />
+    <item name="div1" type="id" />
+    <item name="div2" type="id" />
+    <item name="div3" type="id" />
+    <item name="indicator_layout" type="id" />
+    <item name="indicatorImg" type="id" />
+    <item name="pager" type="id" />
+    <item name="friends" type="id" />
+</resources>
