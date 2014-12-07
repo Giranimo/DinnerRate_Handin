@@ -37,16 +37,12 @@ public class Gps extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         MapFragment mapFrag = new MapFragment();
         mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
-        pro = new ProgressDialog(this);
-        pro.setMessage("Loading...");
-        pro.show();
         setListData();
         for (int i = 0; i < gpsList.size(); i++) {
             GpsObject g = gpsList.get(i);
             mMap.addMarker(new MarkerOptions().position(new LatLng(g.getLatitude(), g.getLongitude())).title(g.getRestaurantName()));
         }
     }
-
     public void setListData() {
         mRequestQueue = Volley.newRequestQueue(this);
         JsonObjectRequest jr = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -55,9 +51,6 @@ public class Gps extends Activity {
                 Log.i("main", response.toString());
                 parseJSON(response);
                 //mAdapter.notifyDataSetChanged();
-
-                hidePro();
-                ;
             }
         }, new Response.ErrorListener() {
             @Override
@@ -67,7 +60,6 @@ public class Gps extends Activity {
         });
         mRequestQueue.add(jr);
     }
-
     private void parseJSON(JSONObject response) {
         try {
             JSONObject jsnObj = response.getJSONObject("JsnObj");
@@ -87,10 +79,4 @@ public class Gps extends Activity {
         }
     }
 
-    private void hidePro() {
-        if (pro != null) {
-            pro.dismiss();
-            pro = null;
-        }
-    }
 }

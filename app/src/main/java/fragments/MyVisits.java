@@ -1,7 +1,9 @@
 package fragments;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -70,28 +72,31 @@ public class MyVisits extends ListFragment {
     }
 
     public void setListData() {
-        mRequestQueue = Volley.newRequestQueue(getActivity());
-        JsonObjectRequest jr = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                Log.i("main", response.toString());
-                parseJSON(response);
-               ;
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.i("main", "onErrorResponse");
-            }
-        });
-        mRequestQueue.add(jr);
+        Log.d("setlist", myVisitsObjectList.toString());
+        if (myVisitsObjectList.isEmpty() ) {
+            mRequestQueue = Volley.newRequestQueue(getActivity());
+            JsonObjectRequest jr = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    Log.i("main", response.toString());
+                    parseJSON(response);
+                    ;
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.i("main", "onErrorResponse");
+                }
+            });
+            mRequestQueue.add(jr);
+        }
     }
 
     private void parseJSON(JSONObject response) {
         try {
+            myVisitsObjectList.clear();
             JSONObject jsnObj = response.getJSONObject("JsnObj");
             JSONArray Myvis = jsnObj.getJSONArray("MyVisits");
-            Log.i("myvisits", "parser json");
             for (int i = 0; i < Myvis.length(); i++) {
 
                 JSONObject obj = Myvis.getJSONObject(i);
@@ -103,7 +108,18 @@ public class MyVisits extends ListFragment {
                 rest.setComment2(obj.getString("Comment2"));
                 rest.setComment3(obj.getString("Comment3"));
                 rest.setSmileyURL(obj.getString("smiley"));
+                rest.setURL(obj.getString("url"));
                 myVisitsObjectList.add(rest);
+                if (i == 0){
+                    SharedPreferences pref = getActivity().getPreferences(0);
+                    SharedPreferences.Editor edt = pref.edit();
+                    edt.putString("name", obj.getString("name"));
+                    edt.putString("rating", obj.getString("rating"));
+                    edt.putString("icon", obj.getString("image"));
+                    edt.commit();
+
+
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -112,7 +128,7 @@ public class MyVisits extends ListFragment {
 
     }
 
-
+/*
     public void onDestroyView() {
         super.onDestroyView();
         Fragment fragment = (getFragmentManager().findFragmentById(R.id.fragment));
@@ -120,7 +136,7 @@ public class MyVisits extends ListFragment {
         ft.remove(fragment);
         ft.commit();
     }
-
+*/
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         MyVisitsObject j = myVisitsObjectList.get(position);

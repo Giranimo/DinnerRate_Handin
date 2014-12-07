@@ -20,14 +20,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
 import com.viewpagerindicator.UnderlinePageIndicator;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import code.CustomAdapter;
-import code.MyVisitsObject;
 import fragments.Friends;
 import fragments.FrontPage;
 import fragments.GpsActivity;
@@ -43,20 +37,13 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     Handler sensorHandler;
     Runnable toggleRunnable;
     private ProgressDialog pro;
-    private List<MyVisitsObject> myVisitsObjectList = new ArrayList<MyVisitsObject>();
     private static final String url = "http://dinnerrate.dk/json.json";
-    private CustomAdapter mAdapter;
-    private RequestQueue mRequestQueue;
-
-    String[] restuarenter = {"DinnerRate", "Cofoco", "MadKlubben", "Tony's", "Noma", "BLa1", "Bla2", "Bla3"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-
-
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
@@ -105,10 +92,13 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 pager.setCurrentItem(3, true);
             }
         });
+
+
         mIndicator = (UnderlinePageIndicator) findViewById(R.id.indicator);
         mIndicator.setFades(false);
         mIndicator.setViewPager(pager);
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -120,18 +110,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     protected void onPause() {
         super.onPause();
         mSensorManager.unregisterListener(this);
-
-    }
-
-    private void hidePro() {
-        if (pro != null) {
-            pro.dismiss();
-            pro = null;
-        }
-    }
-
-    public void searchClicked(View b) {
-
 
     }
 
@@ -172,16 +150,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     @Override
     public void onClick(View view) {
 
-    }
-
-    @Override
-    public void onBackPressed() {
-        if(pager.getCurrentItem() == 0){
-            super.onBackPressed();
-        } else {
-            pager.setCurrentItem(pager.getCurrentItem() - 1);
-
-        }
     }
 
     private class MyPagerAdapter extends FragmentPagerAdapter {

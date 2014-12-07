@@ -33,6 +33,7 @@ public class Restaurant extends Activity implements AdapterView.OnItemClickListe
     private ProgressDialog pro;
     private List<MyVisitsObject> restaurants = new ArrayList<MyVisitsObject>();
     private static final String url = "http://dinnerrate.dk/json.json";
+    private static String restUrl;
 
     ImageLoader mImageLoader;
 
@@ -50,11 +51,12 @@ public class Restaurant extends Activity implements AdapterView.OnItemClickListe
         TextView comment3 = (TextView) findViewById(R.id.comment3);
         RatingBar rtBar = (RatingBar) findViewById(R.id.ratingBar);
         ImageView smiley = (ImageView) findViewById(R.id.smiley);
+
         if (getIntent().getIntExtra("From", -1) == 1) {
             if (mImageLoader == null)
                 mImageLoader = VolleySingleton.getInstance().getImageLoader();
             final MyVisitsObject r = (MyVisitsObject) getIntent().getSerializableExtra("Object");
-
+            restUrl = r.getURL();
             image.setImageUrl(r.getImageUrl(), mImageLoader);
 
             name.setText(r.getRestaurantName());
@@ -84,12 +86,28 @@ public class Restaurant extends Activity implements AdapterView.OnItemClickListe
                     }
                 }
             });
+            image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(restUrl));
+                        browserIntent.setPackage("com.android.chrome");
+                        browserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(browserIntent);
+                    } catch (ActivityNotFoundException e) {
+                        Intent playStoreIntent = new Intent(Intent.ACTION_VIEW);
+                        playStoreIntent.setData(Uri.parse("market://details?id=" + "com.android.chrome"));
+                        playStoreIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(playStoreIntent);
+                    }
+                }
+            });
         }
             if (getIntent().getIntExtra("From", -1) == 2) {
                 if (mImageLoader == null)
                     mImageLoader = VolleySingleton.getInstance().getImageLoader();
                 final Top20Object t = (Top20Object) getIntent().getSerializableExtra("Object");
-
+                restUrl = t.getURL();
                 image.setImageUrl(t.getImageUrl(), mImageLoader);
 
                 name.setText(t.getRestaurantName());
@@ -98,7 +116,6 @@ public class Restaurant extends Activity implements AdapterView.OnItemClickListe
 
                 rtBar.setRating(Float.parseFloat(t.getRating()));
 
-                //rating.setText("Rating: "+ r.getRating());
                 comment1.setText(t.getComment1());
                 comment2.setText(t.getComment2());
                 comment3.setText(t.getComment3());
@@ -119,6 +136,21 @@ public class Restaurant extends Activity implements AdapterView.OnItemClickListe
                         }
                     }
                 });
+                image.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        try {
+                            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(restUrl));
+                            browserIntent.setPackage("com.android.chrome");
+                            browserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(browserIntent);
+                        } catch (ActivityNotFoundException e) {
+                            Intent playStoreIntent = new Intent(Intent.ACTION_VIEW);
+                            playStoreIntent.setData(Uri.parse("market://details?id=" + "com.android.chrome"));
+                            playStoreIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(playStoreIntent);
+                        }
+                    }});
             }
 
         }

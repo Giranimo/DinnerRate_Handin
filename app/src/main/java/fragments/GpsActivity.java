@@ -55,8 +55,12 @@ public class GpsActivity extends Fragment implements LocationListener, View.OnCl
             @Override
             public void onClick(View v) {
                 locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-                Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                tv.setText("Gps: \n Latitude: " + location.getLatitude() + "\n Logitude: " + location.getLongitude());
+                Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+                if (location!=null){
+                    tv.setText("Gps: \n Latitude: " + location.getLatitude() + "\n Logitude: " + location.getLongitude());
+                }
+
             }
         });
 

@@ -69,25 +69,28 @@ public class Top20 extends ListFragment implements AdapterView.OnItemClickListen
     }
 
     public void setListData() {
-        mRequestQueue = Volley.newRequestQueue(getActivity());
-        JsonObjectRequest jr = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                Log.i("main", response.toString());
-                parseJSON(response);
-                ;
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.i("main", error.getMessage());
-            }
-        });
-        mRequestQueue.add(jr);
+        if (Top20ObjectList.isEmpty() ) {
+            mRequestQueue = Volley.newRequestQueue(getActivity());
+            JsonObjectRequest jr = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    Log.i("main", response.toString());
+                    parseJSON(response);
+                    ;
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.i("main", error.getMessage());
+                }
+            });
+            mRequestQueue.add(jr);
+        }
     }
 
     private void parseJSON(JSONObject response) {
         try {
+            Top20ObjectList.clear();
             JSONObject jsnObj = response.getJSONObject("JsnObj");
             JSONArray Myvis = jsnObj.getJSONArray("MyVisits");
             Log.i("myvisits", "parser json");
@@ -102,6 +105,7 @@ public class Top20 extends ListFragment implements AdapterView.OnItemClickListen
                 rest.setComment2(obj.getString("Comment2"));
                 rest.setComment3(obj.getString("Comment3"));
                 rest.setSmileyURL(obj.getString("smiley"));
+                rest.setURL(obj.getString("url"));
                 Top20ObjectList.add(rest);
             }
         } catch (Exception e) {

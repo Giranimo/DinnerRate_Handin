@@ -1,5 +1,8 @@
 package code;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 
 /**
@@ -110,5 +113,6 @@ public class MyVisitsObject implements Serializable {
     public double getLatitude() {
         return this.Latitude;
     }
+
 }
 
