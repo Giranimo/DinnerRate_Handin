@@ -31,7 +31,7 @@ public class Shake extends FragmentActivity {
     private RequestQueue mRequestQueue;
     private List<GpsObject> gpsList = new ArrayList<GpsObject>();
     private static final String url = "http://dinnerrate.dk/Top20.json";
-    private GoogleMap mMap; // Might be null if Google Play services APK is not available.
+    private GoogleMap mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,12 +87,9 @@ public class Shake extends FragmentActivity {
     }
 
     private void setUpMapIfNeeded() {
-        // Do a null check to confirm that we have not already instantiated the map.
         if (mMap == null) {
-            // Try to obtain the map from the SupportMapFragment.
             mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
                     .getMap();
-            // Check if we were successful in obtaining the map.
             if (mMap != null) {
                 setUpMap();
             }
@@ -100,19 +97,18 @@ public class Shake extends FragmentActivity {
     }
     private void setUpMap() {
         mMap.clear();
-        for (int i = 0; i < gpsList.size(); i++) {
+        for (GpsObject g : gpsList) {
 
-            GpsObject g = gpsList.get(i);
             Log.d("map", "" + g.getLatitude());
             mMap.addMarker(new MarkerOptions().position(new LatLng(g.getLongitude(), g.getLatitude())).title(g.getRestaurantName()));
         }
         LatLng la = new LatLng(55.686907, 12.570198);
         CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(la)      // Sets the center of the map to Mountain View
-                .zoom(11)                   // Sets the zoom
-                .bearing(90)                // Sets the orientation of the camera to east
-                .tilt(20)                   // Sets the tilt of the camera to 30 degrees
-                .build();                   // Creates a CameraPosition from the builder
+                .target(la)
+                .zoom(11)
+                .bearing(90)
+                .tilt(20)
+                .build();
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
     }
