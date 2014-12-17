@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.parse.ParseObject;
 import com.viewpagerindicator.UnderlinePageIndicator;
 
 import fragments.Friends;
@@ -59,6 +60,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
             }
         };
+
         this.myVisitsButton = (ImageView) findViewById(R.id.my_visits);
         this.friendsButton = (ImageView) findViewById(R.id.friends);
         this.top20Button = (ImageView) findViewById(R.id.top_20);

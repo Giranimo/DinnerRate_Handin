@@ -8,7 +8,7 @@
     android:layout_height="match_parent">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="581dp"
         >
 
 
@@ -46,9 +46,9 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Comment 1"
             android:id="@+id/comment1"
-            android:layout_marginTop="76dp"
-            android:layout_below="@+id/ratingBar"
-            android:layout_alignEnd="@+id/textView2" />
+            android:layout_below="@+id/smiley"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="117dp" />
 
         <TextView
             android:layout_width="fill_parent"
